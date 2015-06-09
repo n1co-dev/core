@@ -62,15 +62,28 @@ class Factory implements ICacheFactory {
 	{
 		$this->globalPrefix = $globalPrefix;
 
-		if (!($localCacheClass && $localCacheClass::isAvailable())) {
+		if (!$localCacheClass) {
 			$localCacheClass = self::NULL_CACHE;
 		}
-		if (!($distributedCacheClass && $distributedCacheClass::isAvailable())) {
+		if (!$distributedCacheClass) {
 			$distributedCacheClass = $localCacheClass;
 		}
+
+		if (!$localCacheClass::isAvailable()) {
+			throw new \OC\HintException(
+				'Missing memcache class ' . $localCacheClass . ' for local cache',
+				'Is the matching PHP module installed and enabled ?'
+			);
+		}
+		if (!$distributedCacheClass::isAvailable()) {
+			throw new \OC\HintException(
+				'Missing memcache class ' . $distributedCacheClass . ' for distributed cache',
+				'Is the matching PHP module installed and enabled ?'
+			);
+		}
 		if (!($lockingCacheClass && $lockingCacheClass::isAvailable())) {
-			// dont fallback since the fallback might not be suitable for storing lock
-			$lockingCacheClass = '\OC\Memcache\Null';
+			// do not throw an exception here as this is only needed when locking is enabled
+			$lockingCacheClass = self::NULL_CACHE;
 		}
 		$this->localCacheClass = $localCacheClass;
 		$this->distributedCacheClass = $distributedCacheClass;

@@ -528,18 +528,6 @@ if ($_['cronErrors']) {
 		<li><a target="_blank" href="<?php p(link_to_docs('admin-security')); ?>"><?php p($l->t('Hardening and security guidance'));?> ↗</a></li>
 	</ul>
 </div>
-<div class="section" id="server-status">
-	<h2><?php p($l->t('Server Status'));?></h2>
-	<ul>
-		<li>
-			<?php if ($_['fileLockingEnabled']) {
-				p($l->t('Experimental File Lock is enabled.'));
-			} else {
-				p($l->t('Experimental File Lock is disabled.'));
-			} ?>
-		</li>
-	</ul>
-</div>
 
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>

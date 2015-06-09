@@ -432,6 +432,10 @@ class Server extends SimpleContainer implements IServerContainer {
 				if (!($memcache instanceof \OC\Memcache\Null)) {
 					return new MemcacheLockingProvider($memcache);
 				}
+				throw new HintException(
+					'File locking is enabled but the locking cache class was not found',
+					'Please check the "memcache.locking" setting and make sure the matching PHP module is installed and enabled'
+				);
 			}
 			return new NoopLockingProvider();
 		});

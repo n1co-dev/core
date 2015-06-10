@@ -1683,6 +1683,7 @@ class View {
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
 	 */
 	public function changeLock($path, $type) {
+		$path = Filesystem::normalizePath($path);
 		$mount = $this->getMount($path);
 		if ($mount) {
 			$mount->getStorage()->changeLock(
